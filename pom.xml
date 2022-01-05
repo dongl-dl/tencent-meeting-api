@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>tenxun-meeting-api</artifactId>
+    <artifactId>tencent-meeting-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>tenxun-meeting-api</name>
-    <description>tenxun-meeting-api</description>
+    <name>tencent-meeting-api</name>
+    <description>tencent-meeting-api</description>
     <properties>
         <java.version>1.8</java.version>
     </properties>
