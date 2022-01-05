@@ -24,7 +24,7 @@ public class TenCentMeetingApiApplication {
         executor.setMaxPoolSize(threadNum);
         executor.setQueueCapacity(100);
         executor.setKeepAliveSeconds(60);
-        executor.setThreadNamePrefix("maintain-server_");
+        executor.setThreadNamePrefix("TenCent-Meeting-Server_");
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         executor.initialize();
         return executor;
