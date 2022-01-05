@@ -8,10 +8,10 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
 
 @SpringBootApplication
-public class TenxunMeetingApiApplication {
+public class TenCentMeetingApiApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(TenxunMeetingApiApplication.class, args);
+        SpringApplication.run(TenCentMeetingApiApplication.class, args);
     }
 
     @Bean
