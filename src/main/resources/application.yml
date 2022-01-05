@@ -1,0 +1,31 @@
+server:
+  port: 8090
+
+
+spring:
+  application:
+    name: tencent-meeting
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: CcRe123456@
+    database: 2
+    timeout: 5000
+    lettuce:
+      pool:
+        max-active: 200
+        max-wait: -1
+        max-idle: 10
+        min-idle: 0
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+logging:
+  level:
+    root: info
+    com.hikvision.projection.mapper: DEBUG
+    org.springframework.web: ERROR
+    org.springframework: ERROR
