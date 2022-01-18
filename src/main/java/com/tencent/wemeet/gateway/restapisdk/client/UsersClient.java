@@ -14,6 +14,7 @@ import com.tencent.wemeet.gateway.restapisdk.models.request.user.UserUpdateVo;
 import com.tencent.wemeet.gateway.restapisdk.tencentapi.UsersApi;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +32,9 @@ public class UsersClient {
 
     @Autowired
     private UsersApi usersService;
+
+    @Autowired
+    private ThreadPoolTaskExecutor taskExecutor;
 
     /**
      *  创建用户
@@ -150,8 +154,10 @@ public class UsersClient {
         List<UserInfoVo> users = queryUserInfoList1.getUsers();
         if(CollectionUtils.isNotEmpty(users)){
             users.stream().forEach(user ->{
-                UserDeleteVo userDeleteVo = UserDeleteVo.builder().userId(user.getUserid()).build();
-                usersService.deleteUser(userDeleteVo);
+                taskExecutor.submit(() ->{
+                    UserDeleteVo userDeleteVo = UserDeleteVo.builder().userId(user.getUserid()).build();
+                    usersService.deleteUser(userDeleteVo);
+                });
             });
         }
     }
