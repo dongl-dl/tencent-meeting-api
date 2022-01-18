@@ -1,6 +1,7 @@
 package com.tencent.wemeet.gateway.restapisdk.client;
 
 import com.alibaba.fastjson.JSON;
+import com.tencent.wemeet.gateway.restapisdk.models.UserInfoVo;
 import com.tencent.wemeet.gateway.restapisdk.models.base.HttpResponse;
 import com.tencent.wemeet.gateway.restapisdk.models.base.TenCentSdkError;
 import com.tencent.wemeet.gateway.restapisdk.models.request.AuthorizedUsersVo;
@@ -11,8 +12,11 @@ import com.tencent.wemeet.gateway.restapisdk.models.response.QueryUserInfoList;
 import com.tencent.wemeet.gateway.restapisdk.models.response.QueryUserInfoResVo;
 import com.tencent.wemeet.gateway.restapisdk.models.request.user.UserUpdateVo;
 import com.tencent.wemeet.gateway.restapisdk.tencentapi.UsersApi;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author dongliang7
@@ -118,5 +122,37 @@ public class UsersClient {
     public String queryAuthorizedUsers(@RequestBody QueryAuthorizedUsersVo queryAuthorizedUsersVo){
         String authorizedUsers = usersService.queryAuthorizedUsers(queryAuthorizedUsersVo);
         return authorizedUsers;
+    }
+
+
+    /**
+     * 批量移除腾讯会议平台用户
+     */
+    @GetMapping("/moveTenCentUsers")
+    public void moveTenCentUsers(){
+        QueryUserInfoList queryUserInfoList = usersService.queryUserInfoList(1, 20);
+
+        if(null != queryUserInfoList && null != queryUserInfoList.getPageSize() && queryUserInfoList.getPageSize() > 0){
+            Integer pageSize = queryUserInfoList.getPageSize();
+            Integer totalCount = queryUserInfoList.getTotalCount();
+            for(int i = 2; i <= totalCount/pageSize ;i++){
+                QueryUserInfoList queryUserInfoList1 = usersService.queryUserInfoList(i, 20);
+                this.deleteTenCentUser(queryUserInfoList1);
+            }
+        }
+    }
+
+    /**
+     * 删除腾讯会议平台用户
+     * @param queryUserInfoList1
+     */
+    private void deleteTenCentUser(QueryUserInfoList queryUserInfoList1) {
+        List<UserInfoVo> users = queryUserInfoList1.getUsers();
+        if(CollectionUtils.isNotEmpty(users)){
+            users.stream().forEach(user ->{
+                UserDeleteVo userDeleteVo = UserDeleteVo.builder().userId(user.getUserid()).build();
+                usersService.deleteUser(userDeleteVo);
+            });
+        }
     }
 }

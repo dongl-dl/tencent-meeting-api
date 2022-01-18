@@ -67,7 +67,7 @@ public class UsersApi {
         String uri = userUri.concat("/list?page=").concat(String.valueOf(page))
                 .concat("&page_size=").concat(String.valueOf(pageSize));
         HttpResponse httpResponse = TencentMeetingProcess.getProcess(uri);
-        return JSON.parseObject(httpResponse.getResponseBody().toString(), QueryUserInfoList.class);
+        return JSON.parseObject(httpResponse.getResponseBody(), QueryUserInfoList.class);
     }
 
     /**
